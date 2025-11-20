@@ -19,20 +19,44 @@ const Login = () => {
 		setLogin({ ...login, [e.target.name]: e.target.value })
 	}
 
+	// const handleSubmit = async (e) => {
+	// 	e.preventDefault()
+	// 	const success = await loginUser(login)
+	// 	if (success) {
+	// 		const token = success.token
+	// 		auth.handleLogin(token)
+	// 		navigate(redirectUrl, { replace: true })
+	// 	} else {
+	// 		setErrorMessage("Invalid username or password. Please try again.")
+	// 	}
+	// 	setTimeout(() => {
+	// 		setErrorMessage("")
+	// 	}, 4000)
+	// }
 	const handleSubmit = async (e) => {
-		e.preventDefault()
-		const success = await loginUser(login)
-		if (success) {
-			const token = success.token
-			auth.handleLogin(token)
-			navigate(redirectUrl, { replace: true })
-		} else {
-			setErrorMessage("Invalid username or password. Please try again.")
-		}
-		setTimeout(() => {
-			setErrorMessage("")
-		}, 4000)
-	}
+    e.preventDefault();
+
+    const success = await loginUser(login);
+
+    if (success) {
+        const token = success.token;
+
+        // 🔥 SAVE TOKEN to localStorage (THIS WAS MISSING)
+        localStorage.setItem("token", token);
+
+        // Continue with your auth context
+        auth.handleLogin(token);
+
+        navigate(redirectUrl, { replace: true });
+    } else {
+        setErrorMessage("Invalid username or password. Please try again.");
+    }
+
+    setTimeout(() => {
+        setErrorMessage("");
+    }, 4000);
+};
+
 
 	return (
 		<section className="container col-6 mt-5 mb-5">
